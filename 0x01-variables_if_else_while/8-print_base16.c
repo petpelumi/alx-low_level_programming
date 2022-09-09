@@ -21,3 +21,5 @@ putchar('0' + a);
 a++;
 }
 putchar('\n');
+return(0);
+}

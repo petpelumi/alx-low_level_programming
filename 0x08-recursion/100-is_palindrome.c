@@ -1,42 +1,47 @@
+#include "main.h"
+
 /**
-ubstring_match - check if a substring after wildcard matches s1
- * @s1: one string
- * @s2: one string
- * @after_wldcd: placeholder for position right after wildcard
- * Return: 1 if matched, 0 if not
+ * compare - compare head and tail indices for match
+ * @head: index starting from left of string
+ * @tail: index starting from right of string, moving backwards
+ * Return: 1 if palindrome, 0 if not
  */
 
-int substring_match(char *s1, char *s2, char *after_wldcd)
+int compare(char *head, char *tail)
 {
-	if (*s1 == '\0' && *s2 == '\0')
+
+	if (head >= tail)
 		return (1);
-	if (*s1 == '\0' && *s2 == '*')
-		return (substring_match(s1, s2 + 1, s2 + 1));
-	if (*s1 == '\0' && *s2 != '\0')
-		return (0);
-	if (*s2 == '*')
-		return (substring_match(s1, s2 + 1, s2 + 1));
-	if (*s1 == *s2)
-		return (substring_match(s1 + 1, s2 + 1, after_wldcd));
-	else
-		return (substring_match(s1 + 1, after_wldcd, after_wldcd));
+	if (*head == *tail)
+		return (compare(head + 1, tail - 1));
+
+	return (0);
 }
 
 /**
- * wildcmp - compare if string with wildcard mattches
- * @s1: one string
- * @s2: one string
- * Return: 1 if matched, 0 if not
+ * _strlen - find length of string to access last index
+ * @s: string
+ * Return: length
  */
 
-int wildcmp(char *s1, char *s2)
+int _strlen(char *s)
 {
-	if (*s1 == '\0' && *s2 == '\0')
-		return (1);
-	if (*s1 == *s2)
-		return (wildcmp(s1 + 1, s2 + 1));
-	else if (*s2 == '*')
-		return (substring_match(s1, (s2 + 1), (s2 + 1)));
-	else
+
+	if (*s == '\0')
 		return (0);
+	s++;
+	return (1 + (_strlen(s)));
+}
+
+/**
+ * is_palindrome - check if palindrome
+ * @s: string to check
+ * Return: 1 if palindrome, 0 if not
+ */
+
+int is_palindrome(char *s)
+{
+	int len = _strlen(s);
+
+	return (compare(s, (s + len - 1)));
 }
